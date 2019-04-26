@@ -1,0 +1,119 @@
+﻿1 rem布局原理
+rem是相对单位，rem布局的本质是等比缩放，一般是基于宽度，利用根元素的宽度来计算rem的值
+    通过根据跟元素宽度来动态设置rem的值来进行弹性布局
+html字体大小一直等于屏幕宽度的百分之一呢 可以通过js来设置，一般需要在页面dom ready、resize和屏幕旋转中设置
+document.documentElement.style.fontSize = document.documentElement.clientWidth / 100 + 'px'; 
+
+2 react虚拟dom原理
+（1）在react中，render执行的结果得到的并不是真正的DOM节点，结果仅仅是轻量级的javascript对象，我们称为虚拟DOM
+（2）虚拟DOM是react的一大亮点，具有batching（批处理）和高效diff算法。这让我们可以无需担心性能问题而毫无顾忌的随时
+“刷新”整个页面，由虚拟DOM来确保值对外界面上真正变化的部分进行实际的DOM操作。在实际开发中基本无需关心虚拟DOM
+是如何运作的，但是理解其运作机制不仅有助于更好的理解react组件的生命周期，而且进一步优化react程序也会有很大的帮助
+            
+3 redux搭建和使用
+
+什么是redux 
+    数据状态管理，就是说我们项目中有很多组件需要共享数据，这时候可以使用redux
+
+搭建  我一般都会创建3个文件夹。
+action 里面我会定义 方法。这个方法用来触发reducers里面的处理逻辑。
+因为方法里面 会返回两个字段，一个type  用来表示一个字符串， 还有一个data，就是调用actioni 面的方法时传递的参数
+
+reducer 定义store里面的数据和处理逻辑。
+处理逻辑通常使用 switch case 来选择对应的action传递过来的type 类型进行处理  
+
+store 里面会导出 reducer 封装好的数据
+
+使用数据：
+在 index.js 里面使用 provider 这个组件，将根组件和我们引入的store 联系起来。这样根组件中的所有组件都可以使用redux
+在具体的某个组件中，引入 connect 方法，该方法用来将 mapStateToProps mapDispatchToProps 和当前组件关联起来
+mapStateToProps 用来引入数据(store)  mapDispatchToProps 用来引入 action里面的方法
+使用this.props.store的名称 来获取redux里面的数据   
+使用 this.props.actios的名称 来获取action里面的方法
+
+
+                     4 什么是跨域
+
+浏览器从一个域名的网页去请求另一个域名的资源时，域名、端口、协议任一不同，都是跨域 
+（浏览器有同源策略： 不同的ip地址，不同的端口号，不同的网址不同源，不同源就不能发送ajax请求。如果请求就是跨域请求）
+              
+                     5 什么是jsonp
+
+就是利用script的src属性 的可跨域性。请求服务端的返回的数据，返回的数据中 就是一个函数的调用，并把数据作为
+参数传进来。
+在客户端，创建一个，返回数据中的函数，这样，返回的函数就能够调用成功。里面的参数就是我们要的数据
+
+
+                    6 es6 promise 
+promise对象用于一个异步操作的最终完成（或失败）及其结果值的表示。简单点数，它就是用于处理异步操作的，异步处理成功了
+就执行成功的操作，异步处理失败了就捕获错误或者停止后续操作
+这只是简单的数据库查询操作,当操作多时就会回调中嵌着回调,所谓的回调地狱.
+可以把Promise对象看成是一条工厂的流水线，
+pending
+初始状态,也称为未定状态，就是初始化Promise时，调用executor执行器函数后的状态。
+fulfilled
+完成状态，意味着异步操作成功。
+rejected
+失败状态，意味着异步操作失败。
+它只有两种状态可以转化，即
+
+操作成功
+pending -> fulfilled
+操作失败
+pending -> rejected
+并且这个状态转化是单向的，不可逆转，已经确定的状态（fulfilled/rejected）无法转回初始状态（pending）。
+方法：
+Promise.prototype.then()
+Promise对象含有then方法，then()调用后返回一个Promise对象，意味着实例化后的Promise对象可以进行链式调用，
+而且这个then()方法可以接收两个函数，一个是处理成功后的函数，一个是处理错误结果的函数。
+Promise.prototype.catch()
+catch()方法和then()方法一样，都会返回一个新的Promise对象，它主要用于捕获异步操作时出现的异常。因此，我们
+通常省略then()方法的第二个参数，把错误处理控制权转交给其后面的catch()函数，
+
+
+                    7 es6 的继承
+class是一个类也是一个函数，class没有预解析，实例化一定要放在下面
+extends代表继承的意思，super就是指向父类的构造函数，指代了整个proptotype对象或者_proto_指针指向的对象
+
+如果在子类中也写入showName方法，和父类中的方法重名，这样就会覆盖父类的，倘若不想覆盖而是想引用父类的
+showName方法，那么就在子类的showName方法中通过super来调用父类的showName：super.showName
+
+8 es6 还有哪些拓展
+
+9 es5的继承
+
+10 vue双向数据绑定原理
+VUE实现双向数据绑定的原理就是利用了 Object.defineProperty() 这个方法重新定义了
+对象获取属性值(get)和设置属性值(set)的操作来实现的。
+它接收三个参数，要操作的对象，要定义或修改的对象属性名，属性描述符。重点就是最后的属性描述符。
+属性描述符是一个对象，主要有两种形式：数据描述符和存取描述符。
+
+11 vuex的理解
+Vuex是一个专为Vue开发的应用程序的状态管理模式，它采用集中式存储管理应用的所有组件的状态，
+并以相应的规则保证状态以一种可预测的方式发生变化。
+
+12 计算机属性和watch的区别
+
+
+
+
+         13 路由导航守卫（路由钩子）
+
+
+route.beforeEach((to,from,next)=>{
+	
+	})
+
+
+
+                14 原型和原型链
+    
+
+ 所谓作用域链就是：一个函数体中嵌套了多层函数体，并在不同的函数体中定义了同一变量， 当其中一个函数访问这个变量时，便会形成一条作用域链
+
+
+15 html5 和 css3 新特性
+
+
+
+
